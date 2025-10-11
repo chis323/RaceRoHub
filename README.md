@@ -7,8 +7,7 @@ It allows users to discover and join open track days, log and analyze lap times,
 
 2. Purpose & Vision
 
-RaceRoHub bridges the gap between self-improvement and community connection.
-It provides racers with a complete digital toolkit to measure performance, interact socially, and grow together.
+RaceRoHub provides racers with a complete digital toolkit to measure performance, interact socially, and grow together.
 
 Core Goals
 
@@ -25,7 +24,7 @@ The goal is to strengthen the Romanian motorsport community through data, transp
 3. Core Features
 User System
 
-Users register through Firebase Authentication and create personal racing profiles.
+Users register and create personal racing profiles.
 Each profile includes:
 
 Name, username, and city
@@ -91,7 +90,7 @@ Users can register directly in the app and receive notifications for upcoming ev
 
 Messaging
 
-RaceRoHub includes a built-in private messaging system powered by Firebase Realtime Database.
+RaceRoHub includes a built-in private messaging system.
 Users can exchange direct messages with others and receive push notifications for new messages or alerts.
 
 Leaderboards
@@ -168,6 +167,6 @@ The user interface focuses on simplicity and contrast, reflecting a racing aesth
 
 7. Summary
 
-RaceRoHub is a complete digital platform for Romanian racers. It merges performance tracking, competition, and social connection into one unified experience.
+RaceRoHub is a complete digital platform for Romanian racers. It merges performance tracking, competition, and social connection.
 
 By combining analytics, leaderboards, and real-world event participation, RaceRoHub builds a stronger and more connected motorsport community — one that celebrates both progress and passion.
