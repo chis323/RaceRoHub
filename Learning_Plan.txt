@@ -1,0 +1,107 @@
+7-Week Flutter + Spring Boot Learning Plan
+Week 1 – Foundations & Setup
+
+Goal: Get both environments running and understand the basics.
+
+Focus:
+
+Install Flutter SDK, Android Studio or VS Code, and test a sample app
+
+Install Java 21+, IntelliJ IDEA or Spring Tools Suite
+
+Create a “Hello World” Flutter app
+
+Build your first Spring Boot REST API (/hello)
+
+
+
+Week 2 – Flutter Core Concepts
+
+Goal: Learn widgets, layouts, and state management.
+
+Topics:
+
+Stateless vs Stateful Widgets
+
+Container, Row, Column, Stack layouts
+
+TextField, Button, ListView
+
+setState() for interactivity
+
+
+
+Week 3 – Spring Boot CRUD API
+
+Goal: Build a backend with real data.
+
+Topics:
+
+REST controllers, services, repositories
+
+CRUD endpoints for an entity (Task, Book, etc.)
+
+Use H2 in-memory database
+
+Test with Postman
+
+
+
+Week 4 – Connecting Flutter & Spring Boot
+
+Goal: Connect the Flutter app to your Spring Boot backend.
+
+Topics:
+
+HTTP requests with dio or http package
+
+Display API data in a list
+
+Create a Flutter form to send a POST request
+
+Handle loading and error states
+
+
+
+Week 5 – Authentication & Persistence
+
+Goal: Add basic security and save data locally.
+
+Topics:
+
+Spring Security and JWT Authentication
+
+Login and Register API
+
+Flutter Login UI with secure token storage (flutter_secure_storage)
+
+Persist user session
+
+
+
+Week 6 – Polishing & Extra Features
+
+Goal: Improve app experience and performance.
+
+Topics:
+
+Flutter state management (Provider or Riverpod)
+
+API pagination, error messages, loading spinners
+
+Simple animations (AnimatedContainer, Lottie)
+
+Database migration (H2 → MySQL or PostgreSQL)
+
+
+Week 7 – Final Project & Deployment
+
+Goal: Build and deploy a simple production-ready full-stack app.
+
+Tasks:
+
+Finalize frontend and backend integration
+
+Deploy backend to Render, Railway, or AWS
+
+Build Flutter APK or Web app
