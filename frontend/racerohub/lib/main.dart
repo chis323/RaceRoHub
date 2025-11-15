@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/track_page.dart';
+import 'widgets/login_page.dart';
+import 'widgets/profile_page.dart';
 
 void main() => runApp(const RaceRoHubApp());
 
@@ -14,7 +16,11 @@ class RaceRoHubApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      home: const TrackPage(),
+      home: LoginPage(),
+      routes: {
+        '/track': (_) => TrackPage(), 
+        '/profile': (_) => const ProfilePage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }

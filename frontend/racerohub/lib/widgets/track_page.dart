@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/track.dart';
 import '../services/track_service.dart';
 import './track_list.dart';
+import './profile_page.dart';
 
 class TrackPage extends StatefulWidget {
   const TrackPage({super.key});
@@ -14,6 +15,8 @@ class _TrackPageState extends State<TrackPage> {
   late final TrackService _service;
   late Future<List<Track>> _future;
 
+  final int _currentIndex = 1;
+
   @override
   void initState() {
     super.initState();
@@ -21,13 +24,22 @@ class _TrackPageState extends State<TrackPage> {
     _future = _service.fetchTracks();
   }
 
+  void _onNavTap(int index) {
+    if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const ProfilePage()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Tracks')),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        onTap: (_) {},
+        currentIndex: _currentIndex,
+        onTap: _onNavTap,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
