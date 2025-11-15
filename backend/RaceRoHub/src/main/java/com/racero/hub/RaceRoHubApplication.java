@@ -9,5 +9,5 @@ public class RaceRoHubApplication {
     public static void main(String[] args) {
         SpringApplication.run(RaceRoHubApplication.class, args);
     }
-
+ 
 }

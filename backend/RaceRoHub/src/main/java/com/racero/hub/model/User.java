@@ -1,5 +1,7 @@
 package com.racero.hub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,16 +12,21 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "app_user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // <-- ignore proxies
 public class User {
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    public Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public String name;
-    public String password;
-    public String role = "user";
+    private String name;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private String password;
+
+    private String role = "user";
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "car_id")
-    public Car car;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Car car;
 }
