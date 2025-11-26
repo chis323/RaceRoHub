@@ -1,6 +1,5 @@
 package com.racero.hub.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,7 +19,6 @@ public class User {
 
     private String name;
 
-    @JsonIgnore
     private String password;
 
     private String role = "user";
