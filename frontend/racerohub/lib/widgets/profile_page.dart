@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:racerohub/models/car.dart';
+import 'package:racerohub/services/car_service.dart';
+import 'package:racerohub/widgets/car_card.dart';
+import 'package:racerohub/widgets/footer_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:racerohub/widgets/car_form.dart';
 
 import '../services/auth_service.dart';
 import '../models/user.dart';
@@ -15,6 +21,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final _svc = AuthService();
   Future<User>? _futureUser;
+  final int _currentIndex = 2;
+  final CarService _carService = CarService();
+  Future<Car>? _futureCar;
 
   @override
   void initState() {
@@ -35,6 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
     setState(() {
       _futureUser = _svc.getUserById(id);
+      _futureCar = _carService.fetchCar(id);
     });
   }
 
@@ -64,6 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+      bottomNavigationBar: FooterMenu(currentIndex: _currentIndex),
       body: FutureBuilder<User>(
         future: _futureUser,
         builder: (context, snap) {
@@ -79,8 +90,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     const Icon(Icons.error_outline, size: 48),
                     const SizedBox(height: 12),
-                    Text('Failed to load profile:\n${snap.error}',
-                        textAlign: TextAlign.center),
+                    Text(
+                      'Failed to load profile:\n${snap.error}',
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: _loadUser,
@@ -98,7 +111,8 @@ class _ProfilePageState extends State<ProfilePage> {
               Card(
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Row(
@@ -106,7 +120,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       CircleAvatar(
                         radius: 32,
                         child: Text(
-                          user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+                          user.name.isNotEmpty
+                              ? user.name[0].toUpperCase()
+                              : '?',
                           style: const TextStyle(fontSize: 28),
                         ),
                       ),
@@ -115,11 +131,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(user.name,
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600)),
+                            Text(
+                              user.name,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             const SizedBox(height: 4),
-                            Text('Role: ${user.role}'),
                             Text('User ID: ${user.id}'),
                           ],
                         ),
@@ -132,7 +151,8 @@ class _ProfilePageState extends State<ProfilePage> {
               Card(
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: Column(
                   children: [
                     ListTile(
@@ -147,10 +167,36 @@ class _ProfilePageState extends State<ProfilePage> {
                       subtitle: Text(user.role),
                     ),
                     const Divider(height: 0),
-                    ListTile(
-                      leading: const Icon(Icons.directions_car_outlined),
-                      title: const Text('Car'),
-                      subtitle: Text(user.carId?.toString() ?? '—'),
+
+                    FutureBuilder<Car>(
+                      future: _futureCar,
+                      builder: (context, snap) {
+                        if (snap.connectionState == ConnectionState.waiting) {
+                          return const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+
+                        if (snap.hasError || !snap.hasData) {
+                          return Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: CarForm(
+                              userId: user.id!,
+                              onSaved: (car) {
+                                setState(() {
+                                  _futureCar = Future.value(car);
+                                });
+                              },
+                            ),
+                          );
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: CarCard(car: snap.data!),
+                        );
+                      },
                     ),
                   ],
                 ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:racerohub/widgets/footer_menu.dart';
 import '../models/track.dart';
 import '../services/track_service.dart';
 import './track_list.dart';
-import './profile_page.dart';
 
 class TrackPage extends StatefulWidget {
   const TrackPage({super.key});
@@ -24,34 +24,11 @@ class _TrackPageState extends State<TrackPage> {
     _future = _service.fetchTracks();
   }
 
-  void _onNavTap(int index) {
-    if (index == 2) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const ProfilePage()),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Tracks')),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onNavTap,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.route), label: 'Tracks'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
-        ],
-      ),
+      bottomNavigationBar: FooterMenu(currentIndex: _currentIndex),
       body: FutureBuilder<List<Track>>(
         future: _future,
         builder: (context, snap) {
