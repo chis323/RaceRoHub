@@ -3,16 +3,13 @@ package com.racero.hub.controller;
 import com.racero.hub.dtos.UserDto;
 import com.racero.hub.model.User;
 import com.racero.hub.service.UserService;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "*") // tighten to your frontend origin later
+@CrossOrigin(origins = "*")
 public class UserController {
     private final UserService svc;
 
