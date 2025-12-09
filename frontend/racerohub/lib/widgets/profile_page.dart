@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:racerohub/models/car.dart';
+import 'package:racerohub/models/user.dart';
+import 'package:racerohub/services/auth_service.dart';
 import 'package:racerohub/services/car_service.dart';
 import 'package:racerohub/widgets/car_card.dart';
+import 'package:racerohub/widgets/car_form.dart';
 import 'package:racerohub/widgets/footer_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:racerohub/widgets/car_form.dart';
-
-import '../services/auth_service.dart';
-import '../models/user.dart';
 import 'login_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -20,10 +19,13 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final _svc = AuthService();
-  Future<User>? _futureUser;
-  final int _currentIndex = 2;
   final CarService _carService = CarService();
+
+  Future<User>? _futureUser;
   Future<Car>? _futureCar;
+
+  // footer index: 0 = Home, 1 = Tracks, 2 = Messages, 3 = Profile
+  static const int _currentIndex = 3;
 
   @override
   void initState() {
@@ -74,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      bottomNavigationBar: FooterMenu(currentIndex: _currentIndex),
+      bottomNavigationBar: const FooterMenu(currentIndex: _currentIndex),
       body: FutureBuilder<User>(
         future: _futureUser,
         builder: (context, snap) {
@@ -104,10 +106,12 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             );
           }
+
           final user = snap.data!;
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
+              // top card with avatar + name + id
               Card(
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -148,6 +152,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const SizedBox(height: 16),
+
+              // details + car
               Card(
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -167,22 +173,23 @@ class _ProfilePageState extends State<ProfilePage> {
                       subtitle: Text(user.role),
                     ),
                     const Divider(height: 0),
-
                     FutureBuilder<Car>(
                       future: _futureCar,
-                      builder: (context, snap) {
-                        if (snap.connectionState == ConnectionState.waiting) {
+                      builder: (context, carSnap) {
+                        if (carSnap.connectionState ==
+                            ConnectionState.waiting) {
                           return const Padding(
                             padding: EdgeInsets.all(16),
                             child: Center(child: CircularProgressIndicator()),
                           );
                         }
 
-                        if (snap.hasError || !snap.hasData) {
+                        if (carSnap.hasError || !carSnap.hasData) {
+                          // show form if no car yet
                           return Padding(
                             padding: const EdgeInsets.all(16),
                             child: CarForm(
-                              userId: user.id!,
+                              userId: user.id,
                               onSaved: (car) {
                                 setState(() {
                                   _futureCar = Future.value(car);
@@ -194,7 +201,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                         return Padding(
                           padding: const EdgeInsets.all(16),
-                          child: CarCard(car: snap.data!),
+                          child: CarCard(car: carSnap.data!),
                         );
                       },
                     ),

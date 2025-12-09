@@ -24,12 +24,12 @@ class TrackList extends StatelessWidget {
                 width: 150,
                 height: 120,
                 child: track.imageUrl.isEmpty
-                    ? Container(color: theme.colorScheme.surfaceVariant)
+                    ? Container(color: theme.colorScheme.surfaceContainerHighest)
                     : CachedNetworkImage(
                         imageUrl: track.imageUrl,
                         fit: BoxFit.contain,
                         placeholder: (c, _) =>
-                            Container(color: theme.colorScheme.surfaceVariant),
+                            Container(color: theme.colorScheme.surfaceContainerHighest),
                         errorWidget: (c, _, __) =>
                             Container(color: theme.colorScheme.errorContainer),
                       ),

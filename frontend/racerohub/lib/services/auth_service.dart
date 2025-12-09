@@ -81,6 +81,35 @@ class AuthService {
     );
   }
 
+  /// 🔍 NEW: search users by (partial) name, calling GET /api/users/search?q=...
+  Future<List<User>> searchUsers(String query) async {
+    final q = query.trim();
+    if (q.isEmpty) return [];
+
+    final uri = Uri.parse(kApiBaseUrl).replace(
+      path: '/api/users/search',
+      queryParameters: {'q': q},
+    );
+
+    final resp = await _client.get(
+      uri,
+      headers: const {
+        HttpHeaders.acceptHeader: 'application/json',
+      },
+    );
+
+    if (resp.statusCode >= 200 && resp.statusCode < 300) {
+      final List<dynamic> data = jsonDecode(resp.body) as List<dynamic>;
+      return data
+          .map((e) => User.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
+
+    throw HttpException(
+      'Search users failed: ${resp.statusCode} ${resp.reasonPhrase}\n${resp.body}',
+    );
+  }
+
   User _parseUser(String body) {
     final data = jsonDecode(body) as Map<String, dynamic>;
     return User.fromJson(data);
