@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -23,10 +24,11 @@ public class UserService {
     }
 
     public User get(Long id) {
-        return repo.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
+        return repo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
     }
 
-    // --------- FIXED: return 409 when username already exists ----------
+    // --------- create: return 409 when username already exists ----------
     public User create(UserDto u) {
         try {
             // proactive check -> clean 409 for the client
@@ -73,8 +75,11 @@ public class UserService {
     private Field findField(Class<?> type, String name) {
         Class<?> t = type;
         while (t != null && t != Object.class) {
-            try { return t.getDeclaredField(name); }
-            catch (NoSuchFieldException ex) { t = t.getSuperclass(); }
+            try {
+                return t.getDeclaredField(name);
+            } catch (NoSuchFieldException ex) {
+                t = t.getSuperclass();
+            }
         }
         return null;
     }
@@ -90,9 +95,17 @@ public class UserService {
         return v;
     }
 
-    // Keep this for Option B: 401 for any wrong combo (user missing OR bad password)
+    // login: 401 for any wrong combo (user missing OR bad password)
     public User login(UserDto dto) {
         return repo.findByNameAndPassword(dto.getName(), dto.getPassword())
                 .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
+    }
+
+    // 🔍 NEW: search users by (partial) name, case-insensitive
+    public List<User> searchByName(String query) {
+        if (query == null || query.isBlank()) {
+            return List.of();
+        }
+        return repo.findByNameContainingIgnoreCase(query.trim());
     }
 }
