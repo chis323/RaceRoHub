@@ -5,6 +5,7 @@ import com.racero.hub.model.User;
 import com.racero.hub.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,5 +30,9 @@ public class UserController {
     @PostMapping("/auth/login")
     public User login(@RequestBody UserDto u) {
         return svc.login(u);
+    }
+    @GetMapping("/search")
+    public List<User> search(@RequestParam("q") String q) {
+        return svc.searchByName(q);
     }
 }
