@@ -1,6 +1,7 @@
 package com.racero.hub.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.racero.hub.dtos.PostDto;
 import com.racero.hub.model.Post;
 import com.racero.hub.service.PostService;
@@ -29,9 +30,10 @@ public class PostController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Post> create(
-            @RequestPart("post") PostDto request,
+            @RequestPart("post") String request,
             @RequestPart(value = "image", required = false) MultipartFile image
     ) throws IOException {
-        return ResponseEntity.ok(postService.createPost(request, image));
+        PostDto postDto = new ObjectMapper().readValue(request, PostDto.class);
+        return ResponseEntity.ok(postService.createPost(postDto, image));
     }
 }
