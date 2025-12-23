@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:racerohub/widgets/posts_page.dart';
 import './profile_page.dart';
 import './track_page.dart';
 import './message_page.dart';
@@ -15,7 +16,7 @@ class FooterMenu extends StatelessWidget {
 
     switch (index) {
       case 0:
-        target = const ProfilePage();
+        target = const PostsPage();
         break;
       case 1:
         target = const TrackPage();
@@ -43,14 +44,8 @@ class FooterMenu extends StatelessWidget {
       currentIndex: currentIndex,
       onTap: (index) => _onNavTap(context, index),
       items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.route),
-          label: 'Tracks',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.route), label: 'Tracks'),
         BottomNavigationBarItem(
           icon: Icon(Icons.message_outlined),
           label: 'Messages',

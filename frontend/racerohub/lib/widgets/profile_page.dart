@@ -6,6 +6,7 @@ import 'package:racerohub/services/car_service.dart';
 import 'package:racerohub/widgets/car_card.dart';
 import 'package:racerohub/widgets/car_form.dart';
 import 'package:racerohub/widgets/footer_menu.dart';
+import 'package:racerohub/widgets/new_post_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_page.dart';
@@ -111,7 +112,6 @@ class _ProfilePageState extends State<ProfilePage> {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              // top card with avatar + name + id
               Card(
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -151,9 +151,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+              if (user.role.toLowerCase() == 'admin') ...[
+                const SizedBox(height: 12),
+                FilledButton.icon(
+                  onPressed: () async {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => NewPostPage(userId: user.id),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.post_add),
+                  label: const Text('New Post'),
+                ),
+                const SizedBox(height: 4),
+              ],
               const SizedBox(height: 16),
-
-              // details + car
               Card(
                 elevation: 0,
                 shape: RoundedRectangleBorder(
