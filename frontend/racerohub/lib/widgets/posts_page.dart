@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:racerohub/constants.dart';
+
 import '../models/post.dart';
 import '../services/post_service.dart';
+import '../widgets/footer_menu.dart';
 
 class PostsPage extends StatefulWidget {
   const PostsPage({super.key});
@@ -13,6 +15,8 @@ class PostsPage extends StatefulWidget {
 class _PostsPageState extends State<PostsPage> {
   final _postService = PostService();
   late Future<List<Post>> _futurePosts;
+
+  static const int _footerIndex = 0;
 
   @override
   void initState() {
@@ -55,6 +59,7 @@ class _PostsPageState extends State<PostsPage> {
           if (snap.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
+
           if (snap.hasError) {
             return Center(
               child: Padding(
@@ -79,7 +84,7 @@ class _PostsPageState extends State<PostsPage> {
             );
           }
 
-          final posts = snap.data ?? const [];
+          final posts = (snap.data ?? const <Post>[]).toList();
           if (posts.isEmpty) {
             return const Center(child: Text('No posts yet.'));
           }
@@ -156,6 +161,7 @@ class _PostsPageState extends State<PostsPage> {
           );
         },
       ),
+      bottomNavigationBar: const FooterMenu(currentIndex: _footerIndex),
     );
   }
 }
